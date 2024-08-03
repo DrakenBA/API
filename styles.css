@@ -1,0 +1,29 @@
+body {
+    background: linear-gradient(to right, #ff7e5f, #7bfeb2); /* Gradiente de fondo */
+    font-family: 'Arial', sans-serif;
+    color: #111111; /* Texto blanco para contrastar con el fondo */
+}
+
+.container {
+    background: rgba(218, 212, 212, 0.6); /* Fondo semi-transparente para el contenido */
+    border-radius: 15px;
+    padding: 30px;
+    margin-top: 50px;
+}
+
+#map {
+    height: 500px;
+    width: 100%;
+}
+
+h1, h2 {
+    text-align: center;
+}
+
+.btn {
+    width: 100%;
+}
+
+input::placeholder {
+    color: #cccccc;
+}

@@ -1,69 +1,55 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Buscador de Locales de Comida</title>
-    <style>
-        #map {
-            height: 500px;
-            width: 100%;
-        }
-    </style>
+    <title>Buscador y Registro de Locales de Comida</title>
+    <!-- Agregar Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Agregar nuestro CSS personalizado -->
+    <link href="styles.css" rel="stylesheet">
 </head>
 <body>
-    <h1>Buscador de Locales de Comida</h1>
-    <input id="location" type="text" placeholder="Ingresa una ubicación">
-    <button onclick="findPlaces()">Buscar</button>
-    <div id="map"></div>
+    <div class="container">
+        <h1 class="my-4">Buscador y Registro de Locales de Comida</h1>
+        
+        <div class="mb-4">
+            <h2>Buscador de Locales de Comida</h2>
+            <div class="input-group mb-3">
+                <input id="location" type="text" class="form-control" placeholder="Ingresa una ubicacion" required>
+                <div class="input-group-append">
+                    <button class="btn btn-primary" onclick="findPlaces()">Buscar</button>
+                </div>
+            </div>
+            <div id="map" class="mb-4"></div>
+        </div>
 
+        <div class="mb-4">
+            <h2>Registrar Nuevo Local</h2>
+            <div class="form-group">
+                <input id="newPlaceName" type="text" class="form-control" placeholder="Nombre del lugar" required>
+            </div>
+            <div class="form-group">
+                <input id="newPlaceAddress" type="text" class="form-control" placeholder="Direccion del lugar" required>
+            </div>
+            <button class="btn btn-success" onclick="addNewPlace()">Registrar</button>
+        </div>
+
+        <div class="mb-4">
+            <h2>Calificar Local</h2>
+            <div class="form-group">
+                <input id="placeId" type="text" class="form-control" placeholder="ID del lugar" required>
+            </div>
+            <div class="form-group">
+                <input id="rating" type="number" min="1" max="5" class="form-control" placeholder="Calificacion" required>
+            </div>
+            <button class="btn btn-warning" onclick="ratePlace()">Calificar</button>
+        </div>
+    </div>
+
+    <!-- Agregar Bootstrap JS y dependencias -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCp498S6w1qWLbgXg_QpG4pw2EGWECwYkQ&libraries=places"></script>
-    <script>
-        let map;
-        let infowindow;
-
-        function initialize() {
-            const initialLocation = new google.maps.LatLng(19.714401, -98.977789);
-            map = new google.maps.Map(document.getElementById('map'), {
-                center: initialLocation,
-                zoom: 15
-            });
-            infowindow = new google.maps.InfoWindow();
-        }
-
-        function findPlaces() {
-            const location = document.getElementById('location').value;
-            console.log(`Buscando lugares en: ${location}`);
-            fetch(`buscador.php?location=${location}`)
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Datos recibidos:', data);
-                    if (data.status === 'OK') {
-                        for (let i = 0; i < data.results.length; i++) {
-                            createMarker(data.results[i]);
-                        }
-                        const firstResultLocation = data.results[0].geometry.location;
-                        map.setCenter(new google.maps.LatLng(firstResultLocation.lat, firstResultLocation.lng));
-                    } else {
-                        console.error('Error en la búsqueda:', data.status);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error al realizar la solicitud:', error);
-                });
-        }
-
-        function createMarker(place) {
-            const marker = new google.maps.Marker({
-                map: map,
-                position: place.geometry.location
-            });
-
-            google.maps.event.addListener(marker, 'click', function() {
-                infowindow.setContent(place.name);
-                infowindow.open(map, this);
-            });
-        }
-
-        google.maps.event.addDomListener(window, 'load', initialize);
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
